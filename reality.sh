@@ -94,8 +94,8 @@ install_singbox(){
     done
     read -rp "请输入 UUID [可留空待脚本生成]: " UUID
     [[ -z $UUID ]] && UUID=$(sing-box generate uuid)
-    read -rp "请输入配置回落的域名 [默认微软官网]: " dest_server
-    [[ -z $dest_server ]] && dest_server="www.microsoft.com"
+    read -rp "请输入配置回落的域名 [www.cnd-ag.ch]: " dest_server
+    [[ -z $dest_server ]] && dest_server="www.cnd-ag.ch"
 
     # Reality short-id
     short_id=$(openssl rand -hex 8)
@@ -124,7 +124,7 @@ install_singbox(){
             "users": [
                 {
                     "uuid": "$UUID",
-                    "flow": "xtls-rprx-vision"
+                    "flow": ""
                 }
             ],
             "tls": {
@@ -142,7 +142,16 @@ install_singbox(){
                     ]
                 }
             }
+        },
+         {
+        "protocol": "shadowsocks",
+        "port": 80,
+        "settings": {
+            "method": "aes-128-gcm",
+            "password": "88qu8orr7e",
+            "level": 1
         }
+      }  
     ],
     "outbounds": [
         {
@@ -214,11 +223,11 @@ proxies:
     server: $IP
     port: $port
     uuid: $UUID
-    network: tcp
+    network: grpc
     tls: true
     udp: true
     xudp: true
-    flow: xtls-rprx-vision
+    flow: 
     servername: $dest_server
     reality-opts:
       public-key: "$public_key"
